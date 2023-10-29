@@ -2,7 +2,7 @@
 import XtxSwiper from '@/components/XtxSwiper.vue'
 import CustomNavbar from '@/pages/index/component/CustomNavbar.vue'
 import { getHomeBannerAPI, getcategoryDataAPI } from '@/services/home'
-import type { BannerItem } from '@/types/home'
+import type { BannerItem, categoryItem } from '@/types/home'
 import { http } from '@/utils/http'
 import { onLoad } from '@dcloudio/uni-app'
 import { ref } from 'vue'
@@ -17,9 +17,10 @@ const getHomeBannerData = async () => {
   homeBannerList.value = res.result
 }
 
-// const getcategoryList = ref([])
+const getcategoryList = ref<categoryItem[]>([])
 const getcategoryData = async () => {
   const res = await getcategoryDataAPI()
+  getcategoryList.value = res.result
 }
 </script>
 
@@ -34,27 +35,25 @@ const getcategoryData = async () => {
 
   <!-- Front desk category -->
   <view class="category">
-    <view class="categoryItem" v-for="item in 10" :key="item">
+    <view class="categoryItem" v-for="item in getcategoryList" :key="item.id">
       <view class="categoryItemImg">
-        <image
-          src="https://pcapi-xiaotuxian-front-devtest.itheima.net/miniapp/images/nav_icon_1.png"
-        />
+        <image :src="item.icon" />
       </view>
-      <view class="categoryItemTitle">居家</view>
+      <view class="categoryItemTitle">{{ item.name }}</view>
     </view>
   </view>
 </template>
 
 <style lang="scss" scoped>
 page {
-  background-color: #f7f7f7;
+  background-color: #f7f7f7 !important;
 }
 .XtxSwiper {
   height: 270rpx;
 }
 .category {
   margin: 10rpx 0;
-  height: 350rpx;
+  height: 280rpx;
   width: 100%;
   display: flex;
   align-items: center;
@@ -62,14 +61,14 @@ page {
   justify-content: space-evenly;
   color: #666;
   .categoryItem {
-    height: 170rpx;
+    height: 150rpx;
     width: 130rpx;
     display: flex;
     flex-direction: column;
     align-items: center;
     .categoryItemImg {
-      width: 110rpx;
-      height: 110rpx;
+      width: 100rpx;
+      height: 100rpx;
       image {
         width: 100%;
         height: 100%;

@@ -6,3 +6,8 @@ export type BannerItem = {
   imgUrl: string
   type: number
 }
+export type categoryItem = {
+  id: 'string'
+  name: 'string'
+  icon: 'string'
+}
