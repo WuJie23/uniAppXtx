@@ -14,8 +14,9 @@ const httpInterceptor = {
     options.timeout = 10000
     // 3. 添加小程序端请求头标识
     options.header = {
-      'source-client': 'miniapp',
       ...options.header,
+
+      'source-client': 'miniapp',
     }
     // 4. 添加 token 请求头标识
     const memberStore = useMemberStore()
@@ -57,6 +58,7 @@ export const http = <T>(options: UniApp.RequestOptions) => {
       ...options,
       // 响应成功
       success(res) {
+        console.log(res, 'sskskskk')
         // 状态码 2xx，参考 axios 的设计
         if (res.statusCode >= 200 && res.statusCode < 300) {
           // 2.1 提取核心数据 res.data

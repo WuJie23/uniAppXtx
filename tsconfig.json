@@ -14,6 +14,8 @@
       "dom"
     ],
     "types": [
+      "node",
+      "@dcloudio/uni-app",
       "@dcloudio/types", // uni-app API 类型
       "miniprogram-api-typings", // 原生微信小程序类型
       "@uni-helper/uni-app-types", // uni-app 组件类型
