@@ -1,48 +1,58 @@
 <script setup lang="ts">
 //获取屏幕边界到安全区的距离
+defineProps<{ list: getPopularDataAPI[] }>()
 </script>
 
 <template>
   <view class="popular">
-    <view class="popularItem" v-for="item in 4" :key="item">
+    <view class="popularItem" v-for="item in list" :key="item.id">
       <view class="title">
-        <view class="titleLeft">特惠推价</view>
-        <view class="titleRight">金选全攻略</view>
+        <view class="titleLeft">{{ item.title }}</view>
+        <view class="titleRight">{{ item.alt }}</view>
       </view>
-      <view class="imgBox">
-        <view class="imgLeft"
-          ><image
-            mode="scaleToFill"
-            src="https://pcapi-xiaotuxian-front-devtest.itheima.net/miniapp/uploads/goods_small_1.jpg"
-        /></view>
-        <view class="imgRight">
-          <image
-            mode="scaleToFill"
-            src="https://pcapi-xiaotuxian-front-devtest.itheima.net/miniapp/uploads/goods_small_1.jpg"
-          />
+      <navigator url="/pages/hot/hot">
+        <view class="imgBox">
+          <view class="imgLeft" v-for="url in item.pictures" :key="url"
+            ><image mode="scaleToFill" :src="url"
+          /></view>
         </view>
-      </view>
+      </navigator>
     </view>
   </view>
 </template>
 
 <style lang="scss" scope>
 .popular {
+  height: 466;
   display: flex;
   // height: 300rpx;
-  padding: 20rpx 20rpx;
+  padding-left: 26rpx;
+  padding-right: 26rpx;
+  padding-bottom: 10rpx;
   background-color: #fff;
   flex-wrap: wrap;
   .popularItem {
-    width: 350rpx;
-    height: 220rpx;
+    box-sizing: border-box;
+    padding-right: 20rpx;
+    padding-left: 20rpx;
+    padding-bottom: 20rpx;
+    width: 345rpx;
+    height: 230rpx;
+    border-right: 1rpx solid #f1f1f1;
+    border-top: 1rpx solid #f1f1f1;
+    &:nth-child(2n) {
+      border-right: 0 none;
+    }
+    &:nth-child(-n + 2) {
+      border-top: 0 none;
+    }
   }
   .title {
     display: flex;
     align-items: center;
     font-size: 24rpx;
     font-weight: 600;
-    height: 40rpx;
+    height: 60rpx;
     .titleRight {
       margin-left: 10rpx;
       font-size: 22rpx;
@@ -54,13 +64,12 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    height: 170rpx;
+    height: 150rpx;
     width: 100%;
 
-    .imgRight,
     .imgLeft {
-      width: 170rpx;
-      height: 170rpx;
+      width: 145rpx;
+      height: 145rpx;
     }
     image {
       display: block;

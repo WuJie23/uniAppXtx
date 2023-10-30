@@ -28,7 +28,8 @@ const getcategoryData = async () => {
 const getPopularList = ref<PopularItem[]>([])
 const getPopularData = async () => {
   const res = await getPopularDataAPI()
-  console.log(res, '23442')
+  getPopularList.value = res.result
+  console.log(res.result, 'res.result')
 }
 </script>
 
@@ -53,7 +54,7 @@ const getPopularData = async () => {
 
   <!-- hot -->
 
-  <Popular></Popular>
+  <Popular :list="getPopularList"></Popular>
 </template>
 
 <style lang="scss">
