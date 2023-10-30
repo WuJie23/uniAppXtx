@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import XtxSwiper from '@/components/XtxSwiper.vue'
 import CustomNavbar from '@/pages/index/component/CustomNavbar.vue'
+import XtxGuessLike from '@/components/XtxGuessLike'
 import { getHomeBannerAPI, getcategoryDataAPI, getPopularDataAPI } from '@/services/home'
 import type { BannerItem, categoryItem } from '@/types/home'
 import { http } from '@/utils/http'
@@ -14,7 +15,7 @@ onLoad(() => {
 const homeBannerList = ref<BannerItem[]>([])
 const getHomeBannerData = async () => {
   const res = await getHomeBannerAPI()
-  console.log(res, 'ressaaas')
+  // console.log(res, 'ressaaas')
   homeBannerList.value = res.result
 }
 
@@ -29,37 +30,44 @@ const getPopularList = ref<PopularItem[]>([])
 const getPopularData = async () => {
   const res = await getPopularDataAPI()
   getPopularList.value = res.result
-  console.log(res.result, 'res.result')
+  // console.log(res.result, 'res.result')
 }
+// like
 </script>
 
 <template>
   <view class="CustomNavbar">
     <CustomNavbar></CustomNavbar>
   </view>
-
-  <view class="XtxSwiper">
-    <XtxSwiper :list="homeBannerList"></XtxSwiper>
-  </view>
-
-  <!-- Front desk category -->
-  <view class="category">
-    <view class="categoryItem" v-for="item in getcategoryList" :key="item.id">
-      <view class="categoryItemImg">
-        <image :src="item.icon" />
-      </view>
-      <view class="categoryItemTitle">{{ item.name }}</view>
+  <scroll-view scroll-y class="scroll-view">
+    <view class="XtxSwiper">
+      <XtxSwiper :list="homeBannerList"></XtxSwiper>
     </view>
-  </view>
-
-  <!-- hot -->
-
-  <Popular :list="getPopularList"></Popular>
+    <!-- Front desk category -->
+    <view class="category">
+      <view class="categoryItem" v-for="item in getcategoryList" :key="item.id">
+        <view class="categoryItemImg">
+          <image :src="item.icon" />
+        </view>
+        <view class="categoryItemTitle">{{ item.name }}</view>
+      </view>
+    </view>
+    <!-- hot -->
+    <Popular :list="getPopularList"></Popular>
+    <!-- like -->
+    <XtxGuessLike></XtxGuessLike>
+  </scroll-view>
 </template>
 
 <style lang="scss">
 page {
-  background-color: #f7f7f7 !important ;
+  background-color: #f3f3f3 !important ;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+.scroll-view {
+  flex: 1;
 }
 .XtxSwiper {
   height: 270rpx;

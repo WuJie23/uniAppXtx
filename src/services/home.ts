@@ -1,4 +1,4 @@
-import type { BannerItem, PopularItem, categoryItem } from '@/types/home'
+import type { BannerItem, GuessLikeItem, PopularItem, categoryItem } from '@/types/home'
 import { http } from '@/utils/http'
 
 export const getHomeBannerAPI = (distributionSite = 1) => {
@@ -16,9 +16,17 @@ export const getcategoryDataAPI = () => {
 }
 
 // hot
-export const getPopularDataAPI = async () => {
+export const getPopularDataAPI = () => {
   return http<PopularItem[]>({
     method: 'GET',
     url: '/home/hot/mutli',
+  })
+}
+
+//like
+export const getGuessLikeAPI = () => {
+  return http({
+    method: 'GET',
+    url: '/home/goods/guessLike',
   })
 }

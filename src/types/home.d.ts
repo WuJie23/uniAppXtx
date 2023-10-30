@@ -19,3 +19,20 @@ export type PopularItem = {
   title: 'string'
   type: 'string'
 }
+export type GuessLikeItem = {
+  counts: number
+  pageSize: number
+  pages: number
+  page: number
+  items: [
+    {
+      id: string
+      name: string
+      desc: string
+      price: number
+      picture: string
+      discount: number
+      orderNum: number
+    },
+  ]
+}

@@ -1,0 +1,95 @@
+<script setup lang="ts">
+import { ref, onMounted } from 'vue'
+import { getGuessLikeAPI } from '@/services/home.ts'
+onMounted(() => {
+  getGuessLikeData()
+})
+const getGuessLikeList = ref([])
+const getGuessLikeData = async () => {
+  const res = await getGuessLikeAPI()
+  getGuessLikeList.value = res.result.items
+  console.log(res.result.items, 'getGuessLikeAPI')
+}
+// defineProps<{ list: BannerItem[] }>()
+</script>
+
+<template>
+  <view class="guessLike">
+    <view class="guessLikeTitle">猜你喜欢</view>
+    <view class="guessLikeBox">
+      <view class="guessLikeItem" v-for="item in getGuessLikeList" :key="item.id">
+        <navigator class="" target="" url="">
+          <view class="guessLikeItemImg">
+            <image :src="item.picture" />
+          </view>
+
+          <view class="guessLikeItemTitle">{{ item.name }}</view>
+          <view class="guessLikeItemPrice">￥{{ item.price }}</view>
+        </navigator>
+      </view>
+    </view>
+  </view>
+</template>
+
+<style lang="scss" scoped>
+.guessLike {
+  width: 750rpx;
+  padding: 0 20rpx;
+  display: flex;
+  flex-wrap: wrap;
+  .guessLikeTitle {
+    width: 750rpx;
+    height: 80rpx;
+    line-height: 80rpx;
+    font-size: 28rpx;
+    font-weight: 600;
+    text-align: center;
+  }
+  .guessLikeBox {
+    display: flex;
+    justify-content: space-evenly;
+    flex-wrap: wrap;
+    width: 750rpx;
+    .guessLikeItem {
+      padding: 20rpx;
+      display: flex;
+      font-weight: 600;
+      flex-wrap: wrap;
+      border-radius: 20rpx;
+      overflow: hidden;
+      width: 320rpx;
+      height: 440rpx;
+      background-color: #fff !important;
+      margin-bottom: 16rpx;
+      // height: 260rpx;
+      .guessLikeItemImg {
+        display: block;
+        margin-bottom: 10rpx;
+        width: 280rpx;
+        height: 280rpx;
+        image {
+          width: 100%;
+          height: 100%;
+        }
+      }
+    }
+    .guessLikeItemTitle {
+      margin-top: 10rpx;
+      color: #333;
+      font-size: 22rpx;
+      height: 60rpx;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+    }
+    .guessLikeItemPrice {
+      margin: 10rpx 0;
+      height: 36rpx;
+      font-size: 25rpx;
+      color: red;
+    }
+  }
+}
+</style>
