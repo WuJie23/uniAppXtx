@@ -11,3 +11,11 @@ export type categoryItem = {
   name: 'string'
   icon: 'string'
 }
+export type PopularItem = {
+  id: 'string'
+  alt: 'string'
+  pictures: ['string']
+  target: 'string'
+  title: 'string'
+  type: 'string'
+}
