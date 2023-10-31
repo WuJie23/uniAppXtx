@@ -13,13 +13,14 @@ import type { XtxGuess } from '@/types/component'
 onLoad(() => {
   getHomeBannerData(), getcategoryData(), getPopularData()
 })
+// Banner
 const homeBannerList = ref<BannerItem[]>([])
 const getHomeBannerData = async () => {
   const res = await getHomeBannerAPI()
   // console.log(res, 'ressaaas')
   homeBannerList.value = res.result
 }
-
+// category
 const getcategoryList = ref<categoryItem[]>([])
 const getcategoryData = async () => {
   const res = await getcategoryDataAPI()
@@ -36,8 +37,14 @@ const getPopularData = async () => {
 // like
 const GuessLike = ref<XtxGuess>()
 const scrolltolower = () => {
-  console.log('都低了')
+  console.log('滚动到低了')
   GuessLike.value?.getMoreGuessList()
+}
+const isTriggered = ref(false)
+const pullDownHandle = async () => {
+  isTriggered.value = true
+  await Promise.all([getHomeBannerData(), getcategoryData(), getPopularData()])
+  isTriggered.value = false
 }
 </script>
 
@@ -46,7 +53,14 @@ const scrolltolower = () => {
     <CustomNavbar></CustomNavbar>
   </view>
   <!-- scroll box -->
-  <scroll-view scroll-y class="scroll-view" @scrolltolower="scrolltolower">
+  <scroll-view
+    @refresherrefresh="pullDownHandle"
+    :refresher-enabled="true"
+    :refresher-triggered="isTriggered"
+    scroll-y
+    class="scroll-view"
+    @scrolltolower="scrolltolower"
+  >
     <view class="XtxSwiper">
       <XtxSwiper :list="homeBannerList"></XtxSwiper>
     </view>

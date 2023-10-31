@@ -8,7 +8,7 @@ onMounted(() => {
 })
 const getGuessLikeList = ref<GuessLikeItem[]>([])
 const pagePrams: Required<pagePramsResult> = {
-  page: 33,
+  page: 1,
   pageSize: 10,
 }
 const finish = ref(false)
