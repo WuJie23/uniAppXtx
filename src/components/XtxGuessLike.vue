@@ -1,10 +1,11 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
-import { getGuessLikeAPI } from '@/services/home.ts'
+import { getGuessLikeAPI } from '@/services/home'
+import type { GuessLikeItem } from '@/types/home'
 onMounted(() => {
   getGuessLikeData()
 })
-const getGuessLikeList = ref([])
+const getGuessLikeList = ref<GuessLikeItem[]>([])
 const getGuessLikeData = async () => {
   const res = await getGuessLikeAPI()
   getGuessLikeList.value = res.result.items
@@ -18,7 +19,7 @@ const getGuessLikeData = async () => {
     <view class="guessLikeTitle">猜你喜欢</view>
     <view class="guessLikeBox">
       <view class="guessLikeItem" v-for="item in getGuessLikeList" :key="item.id">
-        <navigator class="" target="" url="">
+        <navigator url="">
           <view class="guessLikeItemImg">
             <image :src="item.picture" />
           </view>

@@ -1,6 +1,8 @@
 <script setup lang="ts">
+import type { PopularItem } from '@/types/home'
+
 //获取屏幕边界到安全区的距离
-defineProps<{ list: getPopularDataAPI[] }>()
+defineProps<{ list: PopularItem[] }>()
 </script>
 
 <template>

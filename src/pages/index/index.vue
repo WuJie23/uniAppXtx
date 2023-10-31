@@ -1,13 +1,13 @@
 <script setup lang="ts">
 import XtxSwiper from '@/components/XtxSwiper.vue'
 import CustomNavbar from '@/pages/index/component/CustomNavbar.vue'
-import XtxGuessLike from '@/components/XtxGuessLike'
+import XtxGuessLike from '@/components/XtxGuessLike.vue'
 import { getHomeBannerAPI, getcategoryDataAPI, getPopularDataAPI } from '@/services/home'
-import type { BannerItem, categoryItem } from '@/types/home'
+import type { BannerItem, PopularItem, categoryItem } from '@/types/home'
 import { http } from '@/utils/http'
 import { onLoad } from '@dcloudio/uni-app'
 import { ref } from 'vue'
-import Popular from './component/Popular'
+import Popular from '@/component/Popular.vue'
 
 onLoad(() => {
   getHomeBannerData(), getcategoryData(), getPopularData()
