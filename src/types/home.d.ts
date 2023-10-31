@@ -19,6 +19,7 @@ export type PopularItem = {
   title: 'string'
   type: 'string'
 }
+// 猜你喜欢商品类型
 export type GuessLikeItem = {
   id: string
   name: string
@@ -27,4 +28,12 @@ export type GuessLikeItem = {
   picture: string
   discount: number
   orderNum: number
+}
+// 猜你喜欢后端返回类型
+export type pageResult<T> = {
+  counts: number
+  pageSize: number
+  pages: number
+  page: number
+  items: T[]
 }

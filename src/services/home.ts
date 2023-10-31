@@ -1,4 +1,4 @@
-import type { BannerItem, GuessLikeItem, PopularItem, categoryItem } from '@/types/home'
+import type { BannerItem, GuessLikeItem, PopularItem, categoryItem, pageResult } from '@/types/home'
 import { http } from '@/utils/http'
 
 export const getHomeBannerAPI = (distributionSite = 1) => {
@@ -25,7 +25,7 @@ export const getPopularDataAPI = () => {
 
 //like
 export const getGuessLikeAPI = () => {
-  return http({
+  return http<pageResult<GuessLikeItem>>({
     method: 'GET',
     url: '/home/goods/guessLike',
   })

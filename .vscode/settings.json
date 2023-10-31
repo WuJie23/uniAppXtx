@@ -1,6 +1,12 @@
 {
   // 在保存时格式化文件
   "editor.formatOnSave": true,
+  "autoprefixer.sources": [
+    "last 2 versions"
+  ],
+  "editor.codeActionsOnSave": {
+    "source.fixAll.autocomplete": true
+  },
   // 文件格式化配置
   "[json]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode"
@@ -14,11 +20,10 @@
     "dcloudio"
   ],
   "cSpell.languageSettings": [],
-  "editor.parameterHints":true,
-    "editor.quickSuggestions": {
-        "other": true,
-        "comments": true,
-        "strings": true
-    }
-
+  "editor.parameterHints": true,
+  "editor.quickSuggestions": {
+    "other": true,
+    "comments": true,
+    "strings": true
+  }
 }

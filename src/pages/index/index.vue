@@ -7,7 +7,8 @@ import type { BannerItem, PopularItem, categoryItem } from '@/types/home'
 import { http } from '@/utils/http'
 import { onLoad } from '@dcloudio/uni-app'
 import { ref } from 'vue'
-import Popular from '@/component/Popular.vue'
+import Popular from '@/pages/index/component/Popular.vue'
+import type { XtxGuess } from '@/types/component'
 
 onLoad(() => {
   getHomeBannerData(), getcategoryData(), getPopularData()
@@ -33,13 +34,19 @@ const getPopularData = async () => {
   // console.log(res.result, 'res.result')
 }
 // like
+const GuessLike = ref<XtxGuess>()
+const scrolltolower = () => {
+  console.log('都低了')
+  GuessLike.value?.getMoreGuessList()
+}
 </script>
 
 <template>
   <view class="CustomNavbar">
     <CustomNavbar></CustomNavbar>
   </view>
-  <scroll-view scroll-y class="scroll-view">
+  <!-- scroll box -->
+  <scroll-view scroll-y class="scroll-view" @scrolltolower="scrolltolower">
     <view class="XtxSwiper">
       <XtxSwiper :list="homeBannerList"></XtxSwiper>
     </view>
@@ -55,7 +62,7 @@ const getPopularData = async () => {
     <!-- hot -->
     <Popular :list="getPopularList"></Popular>
     <!-- like -->
-    <XtxGuessLike></XtxGuessLike>
+    <XtxGuessLike ref="GuessLike"></XtxGuessLike>
   </scroll-view>
 </template>
 

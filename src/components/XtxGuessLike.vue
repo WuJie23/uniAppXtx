@@ -12,6 +12,9 @@ const getGuessLikeData = async () => {
   console.log(res.result.items, 'getGuessLikeAPI')
 }
 // defineProps<{ list: BannerItem[] }>()
+defineExpose({
+  getMoreGuessList: getGuessLikeData,
+})
 </script>
 
 <template>
@@ -45,6 +48,29 @@ const getGuessLikeData = async () => {
     font-size: 28rpx;
     font-weight: 600;
     text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    &::before {
+      content: '';
+      display: block;
+      background-image: url(@/static/images/bubble.png);
+      background-repeat: no-repeat;
+      width: 30rpx;
+      height: 30rpx;
+      background-size: contain;
+      margin-right: 10rpx;
+    }
+    &::after {
+      content: '';
+      display: block;
+      background-image: url(@/static/images/bubble.png);
+      background-repeat: no-repeat;
+      width: 30rpx;
+      height: 30rpx;
+      background-size: contain;
+      margin-left: 10rpx;
+    }
   }
   .guessLikeBox {
     display: flex;
