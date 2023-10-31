@@ -8,3 +8,8 @@ export type pageResult<T> = {
   page: number
   items: T[]
 }
+// 分页参数
+export type pagePramsResult = {
+  page?: number
+  pageSize?: number
+}

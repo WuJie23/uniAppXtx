@@ -1,3 +1,4 @@
+import type { pagePramsResult } from '@/types/global'
 import type { BannerItem, GuessLikeItem, PopularItem, categoryItem, pageResult } from '@/types/home'
 import { http } from '@/utils/http'
 
@@ -24,9 +25,10 @@ export const getPopularDataAPI = () => {
 }
 
 //like
-export const getGuessLikeAPI = () => {
+export const getGuessLikeAPI = (data?: pagePramsResult) => {
   return http<pageResult<GuessLikeItem>>({
     method: 'GET',
     url: '/home/goods/guessLike',
+    data,
   })
 }

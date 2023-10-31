@@ -2,13 +2,32 @@
 import { ref, onMounted } from 'vue'
 import { getGuessLikeAPI } from '@/services/home'
 import type { GuessLikeItem } from '@/types/home'
+import type { pagePramsResult } from '@/types/global'
 onMounted(() => {
   getGuessLikeData()
 })
 const getGuessLikeList = ref<GuessLikeItem[]>([])
+const pagePrams: Required<pagePramsResult> = {
+  page: 33,
+  pageSize: 10,
+}
+const finish = ref(false)
 const getGuessLikeData = async () => {
-  const res = await getGuessLikeAPI()
-  getGuessLikeList.value = res.result.items
+  if (finish.value === true) {
+    uni.showToast({
+      icon: 'none',
+      title: '没有更多数据了~',
+    })
+    return
+  }
+  const res = await getGuessLikeAPI(pagePrams)
+  getGuessLikeList.value.push(...res.result.items)
+  if (pagePrams.page < res.result.pages) {
+    pagePrams.page++
+  } else {
+    finish.value = true
+  }
+
   console.log(res.result.items, 'getGuessLikeAPI')
 }
 // defineProps<{ list: BannerItem[] }>()
@@ -21,17 +40,18 @@ defineExpose({
   <view class="guessLike">
     <view class="guessLikeTitle">猜你喜欢</view>
     <view class="guessLikeBox">
-      <view class="guessLikeItem" v-for="item in getGuessLikeList" :key="item.id">
-        <navigator url="">
-          <view class="guessLikeItemImg">
-            <image :src="item.picture" />
-          </view>
+      <navigator url="" class="guessLikeItem" v-for="item in getGuessLikeList" :key="item.id">
+        <view class="guessLikeItemImg">
+          <image :src="item.picture" />
+        </view>
 
-          <view class="guessLikeItemTitle">{{ item.name }}</view>
-          <view class="guessLikeItemPrice">￥{{ item.price }}</view>
-        </navigator>
-      </view>
+        <view class="guessLikeItemTitle">{{ item.name }}</view>
+        <view class="guessLikeItemPrice">￥{{ item.price }}</view>
+      </navigator>
     </view>
+  </view>
+  <view class="loading">
+    {{ finish ? '没有更多数据了~' : '正在加载...' }}
   </view>
 </template>
 
@@ -74,8 +94,9 @@ defineExpose({
   }
   .guessLikeBox {
     display: flex;
-    justify-content: space-evenly;
+    justify-content: space-between;
     flex-wrap: wrap;
+    padding: 0 24rpx;
     width: 750rpx;
     .guessLikeItem {
       padding: 20rpx;
@@ -118,5 +139,12 @@ defineExpose({
       color: red;
     }
   }
+}
+.loading {
+  display: flex;
+  justify-content: center;
+  font-size: 24rpx;
+  height: 30rpx;
+  color: #666;
 }
 </style>
