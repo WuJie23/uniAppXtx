@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import type { PopularItem } from '@/types/home'
 
-//获取屏幕边界到安全区的距离
 defineProps<{ list: PopularItem[] }>()
 </script>
 
@@ -12,13 +11,16 @@ defineProps<{ list: PopularItem[] }>()
         <view class="titleLeft">{{ item.title }}</view>
         <view class="titleRight">{{ item.alt }}</view>
       </view>
-      <navigator url="/pages/hot/hot">
-        <view class="imgBox">
-          <view class="imgLeft" v-for="url in item.pictures" :key="url"
-            ><image mode="scaleToFill" :src="url"
-          /></view>
-        </view>
-      </navigator>
+
+      <view class="imgBox">
+        <navigator
+          class="imgLeft"
+          v-for="url in item.pictures"
+          :key="url"
+          :url="`/pages/hot/hot?type=${item.type}`"
+          ><image mode="scaleToFill" :src="url"
+        /></navigator>
+      </view>
     </view>
   </view>
 </template>
