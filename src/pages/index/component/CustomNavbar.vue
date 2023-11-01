@@ -22,7 +22,6 @@ const { safeAreaInsets } = uni.getSystemInfoSync()
 <style lang="scss">
 //
 .navbar {
-  width: 750rpx;
   height: 180rpx;
   background-image: url('@/static/images/navigator_bg.png');
   padding-top: 20px;

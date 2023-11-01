@@ -9,10 +9,8 @@ import { onLoad } from '@dcloudio/uni-app'
 import { ref } from 'vue'
 import Popular from '@/pages/index/component/Popular.vue'
 import type { XtxGuess } from '@/types/component'
+import PageSkeleton from '@/pages/index/component/PageSkeleton.vue'
 
-onLoad(() => {
-  getHomeBannerData(), getcategoryData(), getPopularData()
-})
 // Banner
 const homeBannerList = ref<BannerItem[]>([])
 const getHomeBannerData = async () => {
@@ -41,11 +39,21 @@ const scrolltolower = () => {
   GuessLike.value?.getMoreGuessList()
 }
 const isTriggered = ref(false)
+// pullDown
 const pullDownHandle = async () => {
   isTriggered.value = true
+  GuessLike.value?.resetGuess()
+
   await Promise.all([getHomeBannerData(), getcategoryData(), getPopularData()])
   isTriggered.value = false
 }
+// isShow
+const isLoading = ref(true)
+onLoad(async () => {
+  isLoading.value = true
+  await Promise.all([getHomeBannerData(), getcategoryData(), getPopularData()])
+  isLoading.value = false
+})
 </script>
 
 <template>
@@ -53,6 +61,7 @@ const pullDownHandle = async () => {
     <CustomNavbar></CustomNavbar>
   </view>
   <!-- scroll box -->
+
   <scroll-view
     @refresherrefresh="pullDownHandle"
     :refresher-enabled="true"
@@ -61,22 +70,25 @@ const pullDownHandle = async () => {
     class="scroll-view"
     @scrolltolower="scrolltolower"
   >
-    <view class="XtxSwiper">
-      <XtxSwiper :list="homeBannerList"></XtxSwiper>
-    </view>
-    <!-- Front desk category -->
-    <view class="category">
-      <view class="categoryItem" v-for="item in getcategoryList" :key="item.id">
-        <view class="categoryItemImg">
-          <image :src="item.icon" />
-        </view>
-        <view class="categoryItemTitle">{{ item.name }}</view>
+    <PageSkeleton v-if="isLoading"></PageSkeleton>
+    <template v-else>
+      <view class="XtxSwiper">
+        <XtxSwiper :list="homeBannerList"></XtxSwiper>
       </view>
-    </view>
-    <!-- hot -->
-    <Popular :list="getPopularList"></Popular>
-    <!-- like -->
-    <XtxGuessLike ref="GuessLike"></XtxGuessLike>
+      <!-- Front desk category -->
+      <view class="category">
+        <view class="categoryItem" v-for="item in getcategoryList" :key="item.id">
+          <view class="categoryItemImg">
+            <image :src="item.icon" />
+          </view>
+          <view class="categoryItemTitle">{{ item.name }}</view>
+        </view>
+      </view>
+      <!-- hot -->
+      <Popular :list="getPopularList"></Popular>
+      <!-- like -->
+      <XtxGuessLike ref="GuessLike"></XtxGuessLike>
+    </template>
   </scroll-view>
 </template>
 
@@ -94,9 +106,9 @@ page {
   height: 270rpx;
 }
 .category {
-  margin: 10rpx 0;
+  margin: 10rpx auto;
   height: 280rpx;
-  width: 100%;
+  width: 750rpx;
   display: flex;
   align-items: center;
   flex-wrap: wrap;
