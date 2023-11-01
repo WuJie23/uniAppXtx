@@ -25,7 +25,10 @@ defineProps<{ list: PopularItem[] }>()
 
 <style lang="scss" scope>
 .popular {
+  width: 750rpx;
   height: 466;
+  margin: 0 auto;
+
   display: flex;
   // height: 300rpx;
   padding-left: 26rpx;

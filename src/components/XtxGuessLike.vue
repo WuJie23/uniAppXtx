@@ -30,9 +30,15 @@ const getGuessLikeData = async () => {
 
   console.log(res.result.items, 'getGuessLikeAPI')
 }
+const resetGuess = () => {
+  pagePrams.page = 1
+  getGuessLikeList.value = []
+  getGuessLikeData()
+}
 // defineProps<{ list: BannerItem[] }>()
 defineExpose({
   getMoreGuessList: getGuessLikeData,
+  resetGuess: resetGuess,
 })
 </script>
 
@@ -58,6 +64,7 @@ defineExpose({
 <style lang="scss" scoped>
 .guessLike {
   width: 750rpx;
+  margin: 0 auto;
   padding: 0 20rpx;
   display: flex;
   flex-wrap: wrap;
@@ -125,6 +132,8 @@ defineExpose({
       margin-top: 10rpx;
       color: #333;
       font-size: 22rpx;
+      width: 280rpx;
+
       height: 60rpx;
       overflow: hidden;
       text-overflow: ellipsis;
@@ -133,6 +142,7 @@ defineExpose({
       -webkit-box-orient: vertical;
     }
     .guessLikeItemPrice {
+      width: 280rpx;
       margin: 10rpx 0;
       height: 36rpx;
       font-size: 25rpx;
