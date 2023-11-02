@@ -1,3 +1,4 @@
+import type exp from 'constants'
 import type { type } from 'os'
 
 export type BannerItem = {

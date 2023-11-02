@@ -94,7 +94,7 @@ onLoad(async () => {
 
 <style lang="scss">
 page {
-  background-color: #f3f3f3 !important ;
+  background-color: #eeeeee !important ;
   height: 100%;
   display: flex;
   flex-direction: column;
