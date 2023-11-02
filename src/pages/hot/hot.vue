@@ -4,11 +4,12 @@
 
 <script setup lang="ts">
 import type { PopularItem } from '@/types/home'
+import { http } from '@/utils/http'
 import { onHide, onLoad, onReady, onShow, onUnload } from '@dcloudio/uni-app'
 import { ref } from 'vue'
 // 页面周期函数--监听页面加载
-onLoad(() => {
-  setTitle()
+onLoad(async () => {
+  await Promise.all([setTitle(), getHotData()])
 })
 // 页面周期函数--监听页面初次渲染完成
 onReady(() => {})
@@ -23,15 +24,24 @@ const hotMap = [
   { type: '4', title: '新鲜好物', url: '/hot/new' },
 ]
 const query = defineProps<{
-  item: string
+  type: string
   // item: PopularItem[]
 }>()
-const item = ref(JSON.parse(query.item))
+const itemMap = hotMap.find((i) => i.type === query.type)
+// 设置标题
 const setTitle = () => {
-  console.log(item.value, 'item')
+  console.log(query.type, itemMap, 'item')
   uni.setNavigationBarTitle({
-    title: item.value.title,
+    title: itemMap!.title,
   })
+}
+// 请求页面数据
+const getHotData = async () => {
+  const res = await http({
+    method: 'GET',
+    url: itemMap!.url,
+  })
+  console.log(res, 'set')
 }
 </script>
 

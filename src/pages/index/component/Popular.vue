@@ -17,7 +17,7 @@ defineProps<{ list: PopularItem[] }>()
           class="imgLeft"
           v-for="url in item.pictures"
           :key="url"
-          :url="`/pages/hot/hot?item=${JSON.stringify(item)}`"
+          :url="`/pages/hot/hot?type=${item.type}`"
           ><image mode="scaleToFill" :src="url"
         /></navigator>
       </view>
