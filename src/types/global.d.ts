@@ -1,12 +1,12 @@
 import type { type } from 'os'
 
 // 通用分页类型
-export type pageResult<T> = {
+export type pageResult = {
   counts: number
   pageSize: number
   pages: number
   page: number
-  items: T[]
+  items: GoodsItem[]
 }
 // 分页参数
 export type pagePramsResult = {

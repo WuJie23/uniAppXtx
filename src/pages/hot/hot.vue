@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { getHotDataAPI } from '@/services/home'
 import type { GoodsItem } from '@/types/global'
 import type { PopularItem } from '@/types/home'
 import type { HotDataItem, SubTypeItem } from '@/types/hot'
@@ -37,10 +38,7 @@ const setTitle = () => {
 const bannerPicture = ref<string>('')
 const subTypes = ref<SubTypeItem[]>([])
 const getHotData = async () => {
-  const res = await http<HotDataItem>({
-    method: 'GET',
-    url: itemMap!.url,
-  })
+  const res = await getHotDataAPI(itemMap!.url)
   // 背景图
   bannerPicture.value = res.result.bannerPicture
   // 推荐列表
@@ -48,7 +46,7 @@ const getHotData = async () => {
   console.log(res, 'set')
 }
 const activeIndex = ref(0)
-const finish = ref(true)
+
 // 请求商品数据
 const pageCount = ref<number>(1)
 const getgoodsItemsList = async () => {
@@ -67,9 +65,28 @@ const getgoodsItemsList = async () => {
   console.log(res, 'set123')
 }
 // 触底加载
+const finish = ref(false)
 const goodsItemsList = ref()
-const scrolltolower = () => {
-  console.log('hot 到底了')
+const scrolltolower = async () => {
+  const currsubTypes = subTypes.value[activeIndex.value]
+  if (currsubTypes.goodsItems.page >= currsubTypes.goodsItems.pages) {
+    finish.value = true
+    uni.showToast({
+      icon: 'none',
+      title: '没有更多数据了~',
+    })
+    return
+  } else {
+    currsubTypes.goodsItems.page++
+    const res = await getHotDataAPI(itemMap!.url, {
+      subType: currsubTypes.id,
+      pageSize: currsubTypes.goodsItems.pageSize,
+      page: currsubTypes.goodsItems.page,
+    })
+    const newCurrsubTypes = res.result.subTypes[activeIndex.value]
+    currsubTypes.goodsItems.items.push(...newCurrsubTypes.goodsItems.items)
+    console.log('hot 到底了', currsubTypes)
+  }
 }
 </script>
 <template>
@@ -90,21 +107,28 @@ const scrolltolower = () => {
     </view>
   </view>
 
-  <scroll-view scroll-y @scrolltolower="scrolltolower">
+  <scroll-view
+    scroll-y
+    @scrolltolower="scrolltolower()"
+    v-for="(item, index) in subTypes"
+    :key="item.id"
+    v-show="activeIndex === index"
+  >
     <view class="guessLike">
       <view class="guessLikeBox">
         <navigator
-          url=""
+          vigator
+          :url="`/pages/goods/goods?${item.id}`"
           class="guessLikeItem"
-          v-for="item in subTypes[activeIndex].goodsItems.items"
-          :key="item.id"
+          v-for="goods in item.goodsItems.items"
+          :key="goods.id"
         >
           <view class="guessLikeItemImg">
-            <image :src="item.picture" />
+            <image :src="goods.picture" />
           </view>
 
-          <view class="guessLikeItemTitle">{{ item.name }}</view>
-          <view class="guessLikeItemPrice">￥{{ item.price }}</view>
+          <view class="guessLikeItemTitle">{{ goods.name }}</view>
+          <view class="guessLikeItemPrice">￥{{ goods.price }}</view>
         </navigator>
       </view>
     </view>
@@ -121,20 +145,21 @@ page {
   display: flex;
   flex-direction: column;
 }
-.noScroll {
-  margin-bottom: 20rpx;
-}
+// .noScroll {
+//   margin-bottom: 20rpx;
+// }
 .Banner {
   height: 224rpx;
   overflow: hidden;
   .bannerImg {
     display: block;
-    border-radius: 0 0 20rpx 20rpx;
+    border-radius: 0 0 65rpx 65rpx;
   }
 }
 .topTabs {
+  border-bottom: #dcdcdc 1rpx solid;
   display: flex;
-  height: 104rpx;
+  height: 100rpx;
   width: 94%;
   position: sticky;
   top: 0rpx;
@@ -143,7 +168,7 @@ page {
   margin-top: -50rpx;
   border-radius: 10rpx;
   background-color: #fff;
-  box-shadow: #e9e9e9 0 10rpx 5rpx;
+  box-shadow: #e0e0e0 0 10rpx 12rpx;
 
   .title {
     height: 100%;
@@ -163,7 +188,7 @@ page {
     display: block;
     content: '';
     width: 46rpx;
-    height: 6rpx;
+    height: 8rpx;
     border-radius: 6rpx;
     background-color: #4cd964;
     position: absolute;
@@ -177,6 +202,7 @@ page {
   width: 750rpx;
   margin: 0 auto;
   padding: 0 20rpx;
+  margin-top: 20rpx;
   display: flex;
   flex-wrap: wrap;
 
