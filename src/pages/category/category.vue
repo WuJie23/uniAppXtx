@@ -5,10 +5,14 @@ import type { categoryItem } from '@/types/category'
 import type { BannerItem } from '@/types/home'
 import { onLoad } from '@dcloudio/uni-app'
 import { ref } from 'vue'
+import PageSkeletonCategory from './PageSkeletonCategory.vue'
+const isShowPageSkeleton = ref(true)
 
-onLoad(() => {
-  Promise.all([getSwiperData(), getCategoryData()])
+onLoad(async () => {
+  await Promise.all([getSwiperData(), getCategoryData()])
+  isShowPageSkeleton.value = false
 })
+
 const swiperData = ref<BannerItem[]>([])
 const getSwiperData = async () => {
   const res = await getHomeBannerAPI(2)
@@ -33,8 +37,6 @@ const setActiveId = (id: string) => {
   scrollData.value = categoryData.value.find((item) => {
     return item.id === categoryId.value
   })
-  console.log(categoryId.value, 'idid')
-  console.log(scrollData, 'scrollDatascrollData')
 }
 //
 </script>
@@ -42,49 +44,54 @@ const setActiveId = (id: string) => {
 <template>
   <!-- <uni-search-bar placeholder="自定placeholder"></uni-search-bar> -->
   <!-- 基本用法 -->
-  <view class="noScroll">
-    <view class="uni-search">
-      <uni-search-bar
-        class="uni-search-bar"
-        :radius="100"
-        bgColor="#f3f3f3"
-        placeholder="请输入商品名称~"
-      ></uni-search-bar>
-    </view>
-  </view>
-  <view class="categoryLeft">
-    <view
-      class="categoryLeftItem"
-      :class="{ active: categoryId === item.id }"
-      v-for="item in categoryData"
-      :key="item.id"
-      @tap="setActiveId(item.id)"
-      >{{ item.name }}</view
-    >
-  </view>
-
-  <scroll-view scroll-y class="scroll">
-    <view class="swiperBox">
-      <XtxSwiper class="XtxSwiper" :list="swiperData"></XtxSwiper>
-    </view>
-    <view class="categoryRightItem" v-for="item in scrollData?.children" :key="item.id">
-      <view class="categoryRightItemTop">
-        <view class="topTitle">{{ item.name }}</view>
-        <view class="topAll">全部<uni-icons type="right" size="13" color="#999"></uni-icons></view>
-      </view>
-      <view class="categoryRightItemContent">
-        <navigator url="" class="ContentItem" v-for="goods in item.goods" :key="goods.id">
-          <view class="ContentItemImg">
-            <image mode="widthFix" :src="goods.picture" />
-          </view>
-
-          <view class="ContentItemTitle">{{ goods.name }}</view>
-          <view class="ContentItemPrice"><text class="priceIcon">￥</text>{{ goods.price }}</view>
-        </navigator>
+  <PageSkeletonCategory v-if="isShowPageSkeleton"></PageSkeletonCategory>
+  <template v-else>
+    <view class="noScroll">
+      <view class="uni-search">
+        <uni-search-bar
+          class="uni-search-bar"
+          :radius="100"
+          bgColor="#f3f3f3"
+          placeholder="请输入商品名称~"
+        ></uni-search-bar>
       </view>
     </view>
-    <view class="noMoreData">没有更多数据了~</view>
-  </scroll-view>
+    <view class="categoryLeft">
+      <view
+        class="categoryLeftItem"
+        :class="{ active: categoryId === item.id }"
+        v-for="item in categoryData"
+        :key="item.id"
+        @tap="setActiveId(item.id)"
+        >{{ item.name }}</view
+      >
+    </view>
+
+    <scroll-view scroll-y class="scroll">
+      <view class="swiperBox">
+        <XtxSwiper class="XtxSwiper" :list="swiperData"></XtxSwiper>
+      </view>
+      <view class="categoryRightItem" v-for="item in scrollData?.children" :key="item.id">
+        <view class="categoryRightItemTop">
+          <view class="topTitle">{{ item.name }}</view>
+          <view class="topAll"
+            >全部<uni-icons type="right" size="13" color="#999"></uni-icons
+          ></view>
+        </view>
+        <view class="categoryRightItemContent">
+          <navigator url="" class="ContentItem" v-for="goods in item.goods" :key="goods.id">
+            <view class="ContentItemImg">
+              <image mode="widthFix" :src="goods.picture" />
+            </view>
+
+            <view class="ContentItemTitle">{{ goods.name }}</view>
+            <view class="ContentItemPrice"><text class="priceIcon">￥</text>{{ goods.price }}</view>
+          </navigator>
+        </view>
+      </view>
+      <view class="noMoreData">没有更多数据了~</view>
+    </scroll-view>
+  </template>
 </template>
 
 <style lang="scss">
