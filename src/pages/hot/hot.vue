@@ -140,7 +140,7 @@ const scrolltolower = async () => {
 
 <style lang="scss">
 page {
-  background-color: #eeeeee !important;
+  background-color: #f7f7f7 !important;
   height: 100%;
   display: flex;
   flex-direction: column;
