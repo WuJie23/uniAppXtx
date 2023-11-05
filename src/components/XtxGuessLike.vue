@@ -46,7 +46,12 @@ defineExpose({
   <view class="guessLike">
     <view class="guessLikeTitle">猜你喜欢</view>
     <view class="guessLikeBox">
-      <navigator url="" class="guessLikeItem" v-for="item in getGuessLikeList" :key="item.id">
+      <navigator
+        url="`/pages/goods/goods?id=${item.id}`"
+        class="guessLikeItem"
+        v-for="item in getGuessLikeList"
+        :key="item.id"
+      >
         <view class="guessLikeItemImg">
           <image :src="item.picture" />
         </view>

@@ -79,7 +79,12 @@ const setActiveId = (id: string) => {
           ></view>
         </view>
         <view class="categoryRightItemContent">
-          <navigator url="" class="ContentItem" v-for="goods in item.goods" :key="goods.id">
+          <navigator
+            :url="`/pages/goods/goods?id=${goods.id}`"
+            class="ContentItem"
+            v-for="goods in item.goods"
+            :key="goods.id"
+          >
             <view class="ContentItemImg">
               <image mode="widthFix" :src="goods.picture" />
             </view>
