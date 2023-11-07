@@ -118,10 +118,10 @@ const scrolltolower = async () => {
       <view class="guessLikeBox">
         <navigator
           vigator
-          :url="`/pages/goods/goods?${item.id}`"
           class="guessLikeItem"
           v-for="goods in item.goodsItems.items"
           :key="goods.id"
+          :url="`/pages/goods/goods?id=${goods.id}`"
         >
           <view class="guessLikeItemImg">
             <image :src="goods.picture" />

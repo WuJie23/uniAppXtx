@@ -10,7 +10,7 @@ const { safeAreaInsets } = uni.getSystemInfoSync()
 const query = defineProps<{
   id: string
 }>()
-
+console.log(query.id, 'ididi')
 // 获取goods数据
 const goodsData = ref<GoodsResult>()
 const getGoodData = async (id: string) => {
@@ -29,6 +29,7 @@ const getMainPicturesIndex = (event: any) => {
 }
 onLoad((option: any) => {
   console.log(option, 'option')
+
   getGoodData(option.id)
 })
 
