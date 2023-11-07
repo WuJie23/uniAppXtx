@@ -47,7 +47,7 @@ defineExpose({
     <view class="guessLikeTitle">猜你喜欢</view>
     <view class="guessLikeBox">
       <navigator
-        url="`/pages/goods/goods?id=${item.id}`"
+        :url="`/pages/goods/goods?id=${item.id}`"
         class="guessLikeItem"
         v-for="item in getGuessLikeList"
         :key="item.id"
